@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Check if the request was an ajax request
  * @return boolean True, the request was an ajax request; otherwise, false
@@ -9,19 +10,13 @@ function isAjaxRequest() {
 
 /**
  * Response for AJAX request
- * @var $success (boolean) true - if success response, false - if error response
- * @var $message (string) - message for response
- * @var $payload (any) - payload for response
+ * @var $response (array) - response data
  */
-function response($success, $message = '', $payload = null) {
-    $response = [
-        'success' => $success,
-        'message' => $message
-    ];
-
-    if (isset($payload)) {
-        $response = array_merge($response, $payload);
-    }
-
-    exit(json_encode($response));
+function response($response) {
+    // Set response code
+    $responseCode = isset($response['code']) ? $response['code'] : 200;
+    http_response_code($responseCode);
+    // Conver to JSON
+    $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+    exit($response);
 }

@@ -1,35 +1,42 @@
 <?php
 require_once './core/headers.php';
 require_once './core/utils.php';
+require_once './core/validate.php';
+require_once './core/sender.php';
 require_once './vendors/PHPMailer/PHPMailerAutoload.php';
-
-function sendEmail($data) {
-    $mailer = new PHPMailer;
-
-    $mailer->CharSet = 'utf-8';
-    $mailer->setFrom('noreply@support.com', $data['companyName']);
-    $mailer->addAddress($data['companyMail']);
-    $mailer->addBCC('jetmix777@yandex.ru');
-    $mailer->Subject = 'Обратный звонок с сайта: ' . $data['companySite'];
-    $mailer->Body = 'Имя: ' . $data['payload']['customer'] . '<br>Телефон: ' . $data['payload']['phone'] . '<br>Удобное время для звонка: ' . $data['payload']['time'] . '<br>Страница заявки: ' . $data['payload']['location'];
-    $mailer->isHTML(true);
-
-    if ($mailer->send()) {
-        return true;
-    }
-
-    return false;
-}
 
 if (isAjaxRequest()) {
     $data = json_decode(file_get_contents('php://input'), true);
-    $send = sendEmail($data);
+    $errors = validate($data);
 
-    if ($send) {
-        response(true, 'E-mail sent successfully');
+    if (count($errors)) {
+        response([
+            'success' => false,
+            'code' => 400,
+            'errors' => $errors,
+            'message' => 'Fields cannot be blank'
+        ]);
     } else {
-        response(false, 'Error while sending e-mail');
+        $send = sendEmail($data);
+
+        if ($send) {
+            response([
+                'success' => true,
+                'code' => 200,
+                'message' => 'Email sent successfully'
+            ]);
+        } else {
+            response([
+                'success' => false,
+                'code' => 500,
+                'message' => 'Failure when sending email'
+            ]);
+        }
     }
 } else {
-    response(false, 'Access denied');
+    response([
+        'success' => false,
+        'code' => 403,
+        'message' => 'Access denied'
+    ]);
 }
