@@ -36,7 +36,7 @@ if (isAjaxRequest()) {
 } else {
     response([
         'success' => false,
-        'code' => 403,
-        'message' => 'Access denied'
+        'code' => 405,
+        'message' => 'Only for POST request'
     ]);
 }

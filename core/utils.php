@@ -16,7 +16,7 @@ function response($response) {
     // Set response code
     $responseCode = isset($response['code']) ? $response['code'] : 200;
     http_response_code($responseCode);
-    // Conver to JSON
+    // Convert to JSON
     $response = json_encode($response, JSON_UNESCAPED_UNICODE);
     exit($response);
 }
