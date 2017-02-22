@@ -28,3 +28,6 @@ In otherwise you will get response:
 ```JSON
 {"success": false, "code": 500, "message": "Failure when sending email"}
 ```
+
+## License
+MIT - https://opensource.org/licenses/mit-license.php
