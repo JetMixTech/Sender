@@ -27,9 +27,9 @@ function validate($data) {
         $errors[] = ['phone' => 'Field cannot be blank'];
     }
 
-    if (empty($data['payload']['time'])) {
-        $errors[] = ['time' => 'Field cannot be blank'];
-    }
+    // if (empty($data['payload']['time'])) {
+    //     $errors[] = ['time' => 'Field cannot be blank'];
+    // }
 
     return $errors;
 }

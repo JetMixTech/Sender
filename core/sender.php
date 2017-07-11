@@ -33,7 +33,7 @@ function sendEmail($data) {
     $mailer = new PHPMailer;
 
     $mailer->CharSet = 'utf-8';
-    $mailer->setFrom('noreply@support.com', $data['companyName']);
+    $mailer->setFrom('info@jetmix.su', $data['companyName']);
     $mailer->addAddress($data['companyMail']);
     $mailer->addBCC('jetmix777@yandex.ru');
     $mailer->Subject = getSubject($data);
